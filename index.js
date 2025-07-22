@@ -33,12 +33,13 @@ app.get('/data', async (req, res) => {
     res.send(products);
 });
 
-//errors middleware
-app.use(errorMiddleware)
 
 // Mount APi routes
 app.use("/api", authRoutes);
 app.use('/api/user', userRouter);
+
+//global errors middleware
+app.use(errorMiddleware)
 
 // Start server
 app.listen(5000, () => {
