@@ -4,16 +4,20 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 
+//Import middle ware
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
+//data base connection
 const connection = require("./database");
+connection();
 
 // import routes
 const { authRoutes } = require("./routes/auth");
 const { userRouter } = require("./routes/userRoutes");
 
-
+//Module impoer
 const Product = require("./models/Product");
-connection();
+
 
 // Init Express App
 const app = express();
