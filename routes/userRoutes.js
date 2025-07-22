@@ -1,13 +1,16 @@
-
 const userRouter = require("express").Router();
+const authorize = require("../middlewares/authMiddleware");
+
+//Controllers import
+const { getUsers, getUser } = require("../controllers/userController");
 
 
 //user -Admin routes
-userRouter.get('/all',(req,res) => res.send({"message":"Admin: get all user profile data"}));
+userRouter.get('/all',getUsers); //need admin authorization
 
 
 //user Routes, protected-JWT
-userRouter.get('/',(req,res) => res.send({"message":"get user profile data"}));
+userRouter.get('/', authorize, getUser);
 
 userRouter.put('/',(req,res) => res.send({"message":"Update user profile data"}));
 
