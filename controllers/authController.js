@@ -29,15 +29,19 @@ exports.userRegister = async (req,res) => {
 // for user login
 exports.userLogin = async (req, res) => {
     try {
-        const { error } = validate(req.body);
+        const { error } = validateLogin(req.body);
         if(error)
-            res.status(400).send({message: error.details[0].message});
+            return res.status(400).send({message: error.details[0].message});
 
         const user = await User.findOne({email: req.body.email});
         if(!user)
-            res.status(401).send({message: "Invalid email or password"});
+            return res.status(401).send({message: "Invalid email or password"});
 
-            const validPassword = await bcrypt.compare(req.body.password, user.password);
+        //  Check for isActive
+        if (!user.isActive)
+            return res.status(403).send({ message: "Your account has been deactivated" });
+
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
 
         if(!validPassword)
             return res.status(401).send({message: "Invalid email or password"});
