@@ -58,8 +58,26 @@ const updatePassword = async (req, res, next) => {
     }
 };
 
+// soft delete. user data needes for admin analytics
+const deleteUser = async (req, res) => {
+  try {
+   
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    user.isActive = false;
+    await user.save();// need to add isActive to the userSchema
+    
+    res.status(200).json({ success: true, message: "Profile deleted successfully" });
+  } catch (err) {
+    console.error("Delete profile error:", err.message);
+    res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
 module.exports = { 
     getUser,
     getUsers,
     updatePassword,
+    deleteUser
 };

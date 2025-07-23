@@ -2,7 +2,7 @@ const userRouter = require("express").Router();
 const authorize = require("../middlewares/authMiddleware");
 
 //Controllers import
-const { getUsers, getUser, updatePassword } = require("../controllers/userController");
+const { getUsers, getUser, updatePassword, deleteUser } = require("../controllers/userController");
 
 
 //user -Admin routes
@@ -14,7 +14,7 @@ userRouter.get('/', authorize, getUser);
 
 userRouter.put('/password', authorize, updatePassword);
 
-userRouter.delete('/',(req,res) => res.send({"message":"Delete user profile data"}));
+userRouter.delete('/', authorize, deleteUser );
 
 
 module.exports = {userRouter};
