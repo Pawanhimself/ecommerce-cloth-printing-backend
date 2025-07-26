@@ -1,27 +1,47 @@
 require("dotenv").config();
+//Import core packages
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+
+//Import middle ware
+const errorMiddleware = require("./middlewares/errorMiddleware");
+
+//data base connection
 const connection = require("./database");
-const { authRoutes } = require("./routes/auth");
-const Product = require("./models/Product");
 connection();
 
+// import routes
+const { authRoutes } = require("./routes/auth");
+const { userRouter } = require("./routes/userRoutes");
+
+//Module impoer
+const Product = require("./models/Product");
+
+
+// Init Express App
 const app = express();
+
+// Middleware
 app.use(express.json());
 app.use(cors());
 app.use(morgan("tiny"));
 
+// Routes
 app.get('/data', async (req, res) => {
     const products = await Product.find();
     res.send(products);
 });
 
-app.use(express.json());
-app.use(cors());
 
+// Mount APi routes
 app.use("/api", authRoutes);
+app.use('/api/user', userRouter);
 
+//global errors middleware
+app.use(errorMiddleware)
+
+// Start server
 app.listen(5000, () => {
     console.log("backend is running!");
 });
