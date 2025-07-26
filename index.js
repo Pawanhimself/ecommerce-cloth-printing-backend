@@ -14,6 +14,7 @@ connection();
 // import routes
 const { authRoutes } = require("./routes/auth");
 const { userRouter } = require("./routes/userRoutes");
+const { ordersRoutes } = require("./routes/ordersRoutes");
 
 //Module impoer
 const Product = require("./models/Product");
@@ -37,6 +38,7 @@ app.get('/data', async (req, res) => {
 // Mount APi routes
 app.use("/api", authRoutes);
 app.use('/api/user', userRouter);
+app.use('/api/orders', ordersRoutes);
 
 //global errors middleware
 app.use(errorMiddleware)
