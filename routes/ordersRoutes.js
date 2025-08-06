@@ -1,21 +1,33 @@
-const ordersRoutes = require('express').Router();
+const { addToCart, createGroupOrder, getCart, getAllUserOrders, getSingleUserOrder} = require('../controllers/ordersController');
+const { getAllOrders, getUserOrders, updateOrderStatus } = require('../controllers/adminOrdersController');
 
+const ordersRoutes = require('express').Router();
+const authorize = require("../middlewares/authMiddleware");
 
 
 // user orders Routes, protected-JWT
-ordersRoutes.post('/',(req,res) => res.send({message:"add new orders"}));
+ordersRoutes.post('/addcart',authorize, addToCart); // save in editproduct db doc
 
-ordersRoutes.get('/my',(req,res) => res.send({message:"Get user orders"}));
+//@descr get only orders saved and not paied
+ordersRoutes.get('/mycart',authorize, getCart);
 
-ordersRoutes.get('/my/:itemid',(req,res) => res.send({message:"Get user single order details"}));
+//@descr 
+ordersRoutes.post('/checkout',authorize, createGroupOrder); //payment status next function
+
+//@desc get previous orders list
+ordersRoutes.get('/myorders',authorize , getAllUserOrders );
+
+//@descr getiing individual order details
+ordersRoutes.get('/my/:orderid', getSingleUserOrder);
+
+
 
 // Admin order Routes
-ordersRoutes.get('/admin',(req,res) => res.send({message:"Admin:get all orders- admin dashboard"}));
+ordersRoutes.get('/admin' , getAllOrders);
 
-ordersRoutes.get('/admin/user/:userId',(req,res) => res.send({message:"Admin:get all orders- admin dashboard"}));
+ordersRoutes.get('/admin/user', getUserOrders );
 
-ordersRoutes.put('/pay',(req,res) => res.send({message:"Admin:mark order- paid"}));
-
-ordersRoutes.put('/status',(req,res) => res.send({message:"Admin:update order status"}));
+//@descr updating status by manager-admin
+ordersRoutes.put('/status', updateOrderStatus);
 
 module.exports = {ordersRoutes};

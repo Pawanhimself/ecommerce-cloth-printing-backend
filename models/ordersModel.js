@@ -1,23 +1,56 @@
 const mongoose = require('mongoose');
 
-const ordersSchema = new mongoose.Schema({
+//@descr individual orders  
+const orderSchema = new mongoose.Schema({
+  user: { 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true
+  },
+  product: {
+    /* type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true, */
+    type: Number, // for testing
+  },
+  editedProduct: {
+    /* type: mongoose.Schema.Types.ObjectId,
+    ref: 'EditedProduct', */
+    type: Number, // for testing
+  },
+  isDelivered: {
+      type: Boolean,
+      default: false,
+    },
+  deliveredAt: {
+      type: Date,
+    },
+  status: {
+      type: String,
+      enum: ['notpayed','payed','processing', 'shipped', 'delivered', 'cancelled'],
+      default: 'notpayed',
+    },
+
+}, {timestamps:true});
+
+
+//@ descr grouping the individual oredrs when payment(each payment)
+const groupOrdersSchema = new mongoose.Schema({
     user: {
-        name:mongoose.Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required: true,
-        index: true,
+        index: true, // making the users as the index
     },
-    orderItems: [
+    orderitems: [
       {
-        product: {
+        order: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Product',
+          ref: 'Order',
           required: true,
         },
-        name: { type: String, required: true },
-        quantity: { type: Number, required: true },
-        price: { type: Number, required: true },
-        image: { type: String }, // optional, can be used to show preview
+        
       },
     ],
     shippingAddress: {
@@ -29,7 +62,7 @@ const ordersSchema = new mongoose.Schema({
     paymentMethod: {
       type: String,
       required: true,
-      enum: ['PayPal', 'Stripe', 'UPI', 'Cash on Delivery']
+      enum: ['PayPal', 'Stripe', 'UPI']
     },
     paymentResult: {
       id: String,
@@ -63,21 +96,17 @@ const ordersSchema = new mongoose.Schema({
     },
     paidAt: {
       type: Date,
-    },
-    isDelivered: {
-      type: Boolean,
-      default: false,
-    },
-    deliveredAt: {
-      type: Date,
-    },
-    status: {
-      type: String,
-      enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'],
-      default: 'Processing',
-    },
+    }    
 },{timestamps:true});
 
-const Orders = mongoose.model('orders',ordersSchema);
 
-module.exports = Orders;
+
+const Order = mongoose.model('Order', orderSchema);
+const GroupOrders = mongoose.model('GroupOrders', groupOrdersSchema);
+
+module.exports = { 
+  Order, 
+  GroupOrders 
+};
+
+
