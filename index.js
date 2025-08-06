@@ -2,6 +2,7 @@ require("dotenv").config();
 //Import core packages
 const express = require("express");
 const cors = require("cors");
+const cloudinary = require('cloudinary').v2;
 const morgan = require("morgan");
 
 //Import middle ware
@@ -15,9 +16,11 @@ connection();
 const { authRoutes } = require("./routes/auth");
 const { userRouter } = require("./routes/userRoutes");
 
+// import cloudinary routes
+const { cloudinaryRoutes } = require("./routes/cloudinaryRoutes");
+
 //Module impoer
 const Product = require("./models/Product");
-
 
 // Init Express App
 const app = express();
@@ -27,16 +30,12 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("tiny"));
 
-// Routes
-app.get('/data', async (req, res) => {
-    const products = await Product.find();
-    res.send(products);
-});
-
-
 // Mount APi routes
 app.use("/api", authRoutes);
 app.use('/api/user', userRouter);
+
+//cloudinary routes
+app.use('/api', cloudinaryRoutes);
 
 //global errors middleware
 app.use(errorMiddleware)
