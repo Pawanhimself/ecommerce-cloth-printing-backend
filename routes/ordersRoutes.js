@@ -1,4 +1,4 @@
-const { addToCart, createGroupOrder, getCart, getAllUserOrders, getSingleUserOrder} = require('../controllers/ordersController');
+const { addToCart, createGroupOrder, getCart, getAllUserOrders, getSingleUserOrder} = require('../controllers/userOrdersController');
 const { getAllOrders, getUserOrders, updateOrderStatus } = require('../controllers/adminOrdersController');
 
 const ordersRoutes = require('express').Router();
