@@ -2,20 +2,20 @@ const { addToCart, createGroupOrder, getCart, getAllUserOrders, getSingleUserOrd
 const { getAllOrders, getUserOrders, updateOrderStatus } = require('../controllers/adminOrdersController');
 
 const ordersRoutes = require('express').Router();
-const authorize = require("../middlewares/authMiddleware");
+const authorizeUser = require("../middlewares/authMiddleware");
 
 
 // user orders Routes, protected-JWT
-ordersRoutes.post('/addcart',authorize, addToCart); // save in editproduct db doc
+ordersRoutes.post('/addcart',authorizeUser, addToCart); // save in editproduct db doc
 
 //@descr get only orders saved and not paied
-ordersRoutes.get('/mycart',authorize, getCart);
+ordersRoutes.get('/mycart',authorizeUser, getCart);
 
 //@descr 
-ordersRoutes.post('/checkout',authorize, createGroupOrder); //payment status next function
+ordersRoutes.post('/checkout',authorizeUser, createGroupOrder); //payment status next function
 
 //@desc get previous orders list
-ordersRoutes.get('/myorders',authorize , getAllUserOrders );
+ordersRoutes.get('/myorders',authorizeUser , getAllUserOrders );
 
 //@descr getiing individual order details
 ordersRoutes.get('/my/:orderid', getSingleUserOrder);

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 // used to authorize the user access
-const authorize = async (req, res, next) => {
+const authorizeUser = async (req, res, next) => {
   try {
     let token;
 
@@ -23,4 +23,4 @@ const authorize = async (req, res, next) => {
   }
 };
 
-module.exports = authorize;
+module.exports = authorizeUser;
