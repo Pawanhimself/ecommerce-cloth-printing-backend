@@ -75,9 +75,45 @@ const deleteUser = async (req, res) => {
   }
 };
 
+//@desc re activate user after deletion
+const reactivateUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Find user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if already active
+    if (user.isActive) {
+      return res.status(400).json({ message: "User is already active" });
+    }
+
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Reactivate user
+    user.isActive = true;
+    await user.save();
+
+    return res.status(200).json({ success: true, message: "User reactivated successfully" });
+
+  } catch (error) {
+    console.error("Error reactivating user:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = { 
     getUser,
     getUsers,
     updatePassword,
-    deleteUser
+    deleteUser,
+    reactivateUser
 };

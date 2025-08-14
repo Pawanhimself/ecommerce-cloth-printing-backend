@@ -15,6 +15,7 @@ connection();
 // import routes
 const { authRoutes } = require("./routes/auth");
 const { userRouter } = require("./routes/userRoutes");
+const { ordersRoutes } = require("./routes/ordersRoutes");
 
 // import cloudinary routes
 const { cloudinaryRoutes } = require("./routes/cloudinaryRoutes");
@@ -33,6 +34,7 @@ app.use(morgan("tiny"));
 // Mount APi routes
 app.use("/api", authRoutes);
 app.use('/api/user', userRouter);
+app.use('/api/orders', ordersRoutes);
 
 //cloudinary routes
 app.use('/api', cloudinaryRoutes);
