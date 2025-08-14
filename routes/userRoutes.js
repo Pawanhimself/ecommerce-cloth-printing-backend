@@ -1,20 +1,21 @@
 const userRouter = require("express").Router();
-const authorizeUser = require("../middlewares/authMiddleware");
+
 
 //Controllers import
 const { getUsers, getUser, updatePassword, deleteUser, reactivateUser } = require("../controllers/userController");
+const { authorize } = require("../middlewares/authMiddleware");
 
 
 //user -Admin routes
-userRouter.get('/all',getUsers); // - [ ] To Do: admin authorization
+userRouter.get('/all', getUsers);
 
 
 //user Routes, protected-JWT
-userRouter.get('/', authorizeUser, getUser);
+userRouter.get('/', authorize({ type: "user" }), getUser);
 
-userRouter.put('/password', authorizeUser, updatePassword);
+userRouter.put('/password', authorize({ type: "user" }), updatePassword);
 
-userRouter.patch('/', authorizeUser, deleteUser );
+userRouter.patch('/', authorize({ type: "user" }), deleteUser );
 
 userRouter.patch('/reactivate', reactivateUser );
 
