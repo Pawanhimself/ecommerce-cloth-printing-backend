@@ -18,7 +18,7 @@ const getUsers = async (req, res, next) => {
  // get single users info
 const getUser = async (req, res, next) => {
     try {
-        const user = await getUserInfodb(req.userId); //utils
+        const user = await getUserInfodb(req.user._id); //utils
         res.status(200).json({success:true, data: user});
     } catch (error) {
         next(error);
@@ -38,7 +38,7 @@ const updatePassword = async (req, res, next) => {
       return res.status(400).json({ message: 'New password must be at least 6 characters long' });
     }
 
-    const user = await getUserInfodb(req.userId, false); //utils + excludepassword =false
+    const user = await getUserInfodb(req.user._id, false); //utils + excludepassword =false
 
     const isMatch = await bcrypt.compare(oldPassword, user.password);
 
@@ -62,7 +62,7 @@ const updatePassword = async (req, res, next) => {
 const deleteUser = async (req, res) => {
   try {
    
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ success: false, message: "User not found" });
 
     user.isActive = false;
