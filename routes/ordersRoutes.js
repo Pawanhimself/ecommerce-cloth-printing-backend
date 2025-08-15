@@ -23,11 +23,11 @@ ordersRoutes.get('/my/:orderid',authorize({ type: "user" }), getSingleUserOrder)
 
 
 // Admin order Routes
-ordersRoutes.get('/admin' , getAllOrders);
+ordersRoutes.get('/admin' ,authorize({ type: "admin" }), getAllOrders);
 
-ordersRoutes.get('/admin/user', getUserOrders );
+ordersRoutes.get('/admin/user',authorize({ type: "admin" }), getUserOrders );
 
 //@descr updating status by manager-admin
-ordersRoutes.put('/status', updateOrderStatus);
+ordersRoutes.put('/status',authorize({ type: "admin" }), updateOrderStatus);
 
 module.exports = {ordersRoutes};

@@ -7,7 +7,7 @@ const { authorize } = require("../middlewares/authMiddleware");
 
 
 //user -Admin routes
-userRouter.get('/all', getUsers);
+userRouter.get('/all',authorize({ type: "admin" }), getUsers);
 
 
 //user Routes, protected-JWT
