@@ -24,6 +24,17 @@ adminUserSchema.methods.generateAuthToken = function() {
 
 const AdminUser = mongoose.model("AdminUser", adminUserSchema);
 
+const validateAdminCreation = (data) => {
+  const schema = Joi.object({
+    firstName: Joi.string().min(2).max(100).required().label("First Name"),
+    lastName: Joi.string().min(2).max(100).required().label("Last Name"),
+    email: Joi.string().email().required().label("Email"),
+    password: Joi.string().required().label("Password"), // TODO: password complexity required
+    role: Joi.string().valid('admin', 'superadmin').required().label("Role")
+  });
+  return schema.validate(data);
+}
+
 const validateAdminLogin = (data) => {
   const schema = Joi.object({
     email: Joi.string().email().required().label("Email"),
@@ -32,4 +43,4 @@ const validateAdminLogin = (data) => {
   return schema.validate(data);
 }
 
-module.exports = { AdminUser, validateAdminLogin};  
+module.exports = { AdminUser, validateAdminCreation, validateAdminLogin };
