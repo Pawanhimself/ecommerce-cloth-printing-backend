@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { AdminUser } = require("../models/AdminUser");
 const { User } = require("../models/User");
-require("dotenv").config();
 
 // @desc extract and verify token
 const decodeToken = (headers, secret) => {
