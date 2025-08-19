@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const addToCart = async (req, res) => {
   const {product, editedProduct} = req.body;
   const order = new Order({
+
     user: req.user._id,
     product,
     editedProduct
@@ -105,3 +106,4 @@ module.exports = {
     getAllUserOrders,
     getSingleUserOrder
 };
+
