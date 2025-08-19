@@ -7,7 +7,9 @@ const mongoose = require('mongoose');
 const addToCart = async (req, res) => {
   const {product, editedProduct} = req.body;
   const order = new Order({
+
     user: req.user._id,
+
     product,
     editedProduct
   });
@@ -19,7 +21,9 @@ const addToCart = async (req, res) => {
 const getCart = async (req, res) => {
   try {
     const cartOrders = await Order.find({ 
+
       user: req.user._id, 
+
       status: 'notpayed' 
     }).lean();
 
@@ -55,6 +59,7 @@ const createGroupOrder = async (req, res) => {
 
     const groupOrder = new GroupOrders({
       user: req.user._id,
+
       orderitems:  orderIds.map(id => ({ order: id })),
       paymentMethod: payment.method,
       shippingAddress
@@ -73,6 +78,7 @@ const createGroupOrder = async (req, res) => {
 const getAllUserOrders = async (req, res) => {
   try {
     const allOrders = await GroupOrders.find({ user: req.user._id })
+
       .populate({ path: 'orderitems.order' }) // 1st level: populate order
       .sort({ createdAt: -1 });
 
