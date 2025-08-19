@@ -18,7 +18,7 @@ exports.adminLogin = async (req, res) => {
             return res.status(401).send({ message: "Invalid email or password" });
         }   
         const token = adminUser.generateAuthToken();
-        return res.status(200).send({ success: true, data: token, message: "Admin logged in successfully" });
+        return res.status(200).send({ success: true, token: token, message: "Admin logged in successfully" });
     }
     catch (error) {
         console.error("Error during admin login:", error);
