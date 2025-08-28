@@ -4,8 +4,8 @@ const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 
 const adminUserSchema = new mongoose.Schema({
-  firstName: { type: String, required: true},
-  lastName: { type: String, required: true },
+  firstName: { type: String},
+  lastName: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['admin', 'superadmin'], default: 'admin' },
@@ -24,6 +24,17 @@ adminUserSchema.methods.generateAuthToken = function() {
 
 const AdminUser = mongoose.model("AdminUser", adminUserSchema);
 
+const validateAdminCreation = (data) => {
+  const schema = Joi.object({
+    firstName: Joi.string().min(2).max(100).label("First Name"),
+    lastName: Joi.string().min(2).max(100).label("Last Name"),
+    email: Joi.string().email().required().label("Email"),
+    password: Joi.string().required().label("Password"), // TODO: password complexity required
+    role: Joi.string().valid('admin', 'superadmin').required().label("Role")
+  });
+  return schema.validate(data);
+}
+
 const validateAdminLogin = (data) => {
   const schema = Joi.object({
     email: Joi.string().email().required().label("Email"),
@@ -32,4 +43,4 @@ const validateAdminLogin = (data) => {
   return schema.validate(data);
 }
 
-module.exports = { AdminUser, validateAdminLogin};  
+module.exports = { AdminUser, validateAdminCreation, validateAdminLogin };

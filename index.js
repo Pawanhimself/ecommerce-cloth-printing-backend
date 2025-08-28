@@ -22,6 +22,7 @@ const { cloudinaryRoutes } = require("./routes/cloudinaryRoutes");
 
 //Module impoer
 const Product = require("./models/Product");
+const { initializeSuperAdmin } = require("./utils/createAdminUser");
 
 // Init Express App
 const app = express();
@@ -45,4 +46,5 @@ app.use(errorMiddleware)
 // Start server
 app.listen(5000, () => {
     console.log("backend is running!");
+    initializeSuperAdmin();
 });

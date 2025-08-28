@@ -47,7 +47,7 @@ const updateOrderStatus = async (req, res) => {
 
         //@descr check if already same
         if (newStatus === orderData.status ) {
-          return res.status(409).json({success: true, message: "order status conflict"});
+          return res.status(409).json({success: false, message: "order status conflict"});
         };
         
         //@descr update
