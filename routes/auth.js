@@ -4,7 +4,7 @@ const { adminLogin, adminCreation } = require('../controllers/adminAuthControlle
 const { authorize } = require("../middlewares/authMiddleware");
 
 
-router.post("/register", userRegister);
+router.post("/signup", userRegister);
 router.post("/login", userLogin);
 
 router.post("/admin/login", adminLogin);
